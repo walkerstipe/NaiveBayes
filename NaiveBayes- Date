@@ -1,0 +1,184 @@
+/*Hello REU people! This is potentially the most important application of the naive bayes algorithm-- getting a date!
+just a simple 3 numeric variable problem with a small dataset (10 data points) Raining/Sunny, car working/not (the latter 
+is more likely in my case) and the all important whether or not the girl will weigh a free meel over the horror of my attempts
+at humor aka whether or not she goes out or stays home. I am no master-programmer or machine learning expert so please forgive 
+any blunders you may (will) find. 
+*/
+
+public class MyAttempt {
+
+public static double ProbOfBGivenAisTrue(double[][] DATA, int a, int b,	
+		int EMOTA, int EMOTB)
+	{
+		double[][] dataSet=DATA;
+		int A=a;
+		int B=b;
+		int emota=EMOTA;
+		int emotb=EMOTB;
+		double AandBSum = 0;
+		double BSum=0;
+		for (int row=0; row<dataSet.length; row++)//traverse all rows
+		{
+			//if A is 1 & B is 1
+			if (dataSet[row][A]==emota && dataSet[row][B]==emotb)
+			{
+				AandBSum++;
+			}
+			//sum up B
+			if (dataSet[row][B]==emotb)
+			{
+				BSum++;
+			}
+		}
+		System.out.println("AandBSum: "+AandBSum);
+		double POBGAT=AandBSum/BSum;
+		System.out.println("POBGAT: "+POBGAT);
+return POBGAT;
+	}
+	
+	//Prior Probability
+public static double PriorProb(double[][] DATA, int a, int EMOTA)
+	{
+		double[][] dataSet=DATA;
+		int A=a;
+		int emota=EMOTA;
+		double ASum = 0;
+		//
+		for (int row=0; row<dataSet.length; row++)
+		{
+			if (dataSet[row][A]==emota)//if weather is sunny
+			{
+				ASum++;
+			}
+		}
+	System.out.println("ASum: "+ASum);
+		double ProbOfA=ASum/dataSet.length;
+		System.out.println("PriorProb: "+ProbOfA);
+return ProbOfA;
+	}
+//priori probability
+public static double PrioriProb(double[][] DATA, int b,
+		int EMOTB)
+{
+	double[][] dataSet=DATA;
+	int B=b;
+	int emotb=EMOTB;
+	double BSum = 0;
+	//
+	for (int row=0; row<dataSet.length; row++)
+	{
+		if (dataSet[row][B]==emotb)//if B is goood
+		{
+			BSum++;
+		}
+	}
+	System.out.println("BSum: "+BSum);
+
+	double ProbOfB=BSum/dataSet.length;
+	System.out.println("PrioriProb: "+ProbOfB);
+return ProbOfB;
+}
+/*
+public static double recursiveMod(double x, double y)
+{
+
+            if (x < y) return x;
+
+            else return recursiveMod(x - y, y);
+
+}
+*/
+public static void main(String[] args)
+	{
+		double[][] data=
+			{{1, 1,	1},
+			{0	,0, 1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{0	,0,	0},
+			{0	,0,	0},
+			{1	,1,	0},
+			{1	,0,	0},
+			{0	,0,	0}};
+//when probability method is called, use 0,1,2 to denote car, weather,
+// and evening activities.
+		final int sunny=1;
+		final int rainy=0;
+		final int working=1;
+		final int broken=0;
+		final int Out=1;
+		final int Home=0;
+
+		final double POut=.5;
+		final double PHome=.5;
+
+		final double PSunnyGIVENOut=.8;
+		final double PRainyGIVENOut=.2;
+		final double PSunnyGIVENHome=.4;
+		final double PRainyGIVENHome=.6;
+
+		final double PworkingGIVENOut=.8;
+		final double PBrokenGIVENOut=.2;
+		final double PworkingGIVENHome=.2;
+		final double PBrokenGIVENHome=.8;
+		
+		final int a=0;// weather
+		final int b=2;// go out/stay in
+		final int ea=1;// sunny
+		final int eb=1;// go out
+
+		//System.out.println(PrioriProb(data, 1,2));
+		//System.out.println(PriorProb(data, 1,2));
+		//ProbOfBGivenAisTrue(double[][] DATA, int a, int acol, int b
+		//		,int bcol)
+		
+		//System.out.println("Prob Of B Given A is True: "
+		//+ ""+ProbOfBGivenAisTrue(data, a,b));
+
+		//System.out.println("PriorProb: "+PriorProb(data, a, ea));
+		
+		System.out.println("Prob Of A Given B is True: "
+				+ ""+(ProbOfBGivenAisTrue(data, a,b,ea,eb)*
+						PriorProb(data, a, ea))/PrioriProb(data,b,eb));
+		double[][] data2=
+			{{1, 1,	1},
+			{0	,0, 1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{0	,0,	0},
+			{0	,0,	0},
+			{1	,1,	0},
+			{1	,0,	0},
+			{0	,0,	0},
+			{0  ,0, 0}};
+		System.out.println();
+		System.out.println("Prob Of A Given B is True: "
+				+ ""+(ProbOfBGivenAisTrue(data2, a,b,ea,eb)*
+						PriorProb(data2, a, ea))/PrioriProb(data2,b,eb));
+		double[][] data3=
+			{{1, 1,	1},
+			{0	,0, 1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{1	,1,	1},
+			{0	,0,	0},
+			{0	,0,	0},
+			{1	,1,	0},
+			{1	,0,	0},
+			{0	,0,	0},
+			{1  ,1, 1}};
+		System.out.println();
+		System.out.println("Prob Of A Given B is True: "
+				+ ""+(ProbOfBGivenAisTrue(data3, a,b,ea,eb)*
+						PriorProb(data3, a, ea))/PrioriProb(data3,b,eb));
+		// PSunnyGIVENOut=.8;
+		
+	//	double x=8;
+	//	double y=3;
+	//	System.out.println("normal mod: "+(x%y));
+	//	System.out.println("RecursiveMod: "+recursiveMod(x,y));
+
+	}
+}
